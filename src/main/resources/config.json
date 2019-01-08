@@ -1,0 +1,29 @@
+{
+	"extension": ".md .txt",
+	"replace": [
+		{
+			"filePath": "",
+			"old": "",
+			"new": "",
+			"supportRegex": true
+		},
+		{
+			"filePath": "",
+			"old": "",
+			"new": "",
+			"supportRegex": true
+		},
+		{
+			"filePath": "",
+			"old": "",
+			"new": "",
+			"supportRegex": true
+		},
+		{
+			"filePath": "",
+			"old": "",
+			"new": "",
+			"supportRegex": true
+		}
+	]
+}
