@@ -2,9 +2,9 @@
 
 -  编译生成可运行jar包
 
-```
-mvn package
-```
+ ```
+ mvn package
+ ```
 
 -  拷贝classpath 中的config文件与jar同级
 
@@ -15,8 +15,4 @@ mvn package
  ```
  java -jar .\text-replace-0.0.1-SNAPSHOT.jar
  ```
-
-
-
-
 
