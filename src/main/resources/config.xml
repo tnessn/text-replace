@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<replace>
-
-</replace>
+<ReplaceMsg>
+	<extension>.md .txt</extension>
+	<places>
+		<place>
+			<filePath>d:\\123.txt</filePath>
+			<oldStr>aa</oldStr>
+			<newStr>bb</newStr>
+			<supportRegex></supportRegex>
+		</place>
+		<place>
+			<filePath>d:\\123</filePath>
+			<oldStr>aa</oldStr>
+			<newStr>bb</newStr>
+			<supportRegex></supportRegex>
+		</place>
+		<place>
+			<filePath>d:\\123</filePath>
+			<oldStr>aa</oldStr>
+			<newStr>bb</newStr>
+			<supportRegex>true</supportRegex>
+		</place>
+	</places>
+</ReplaceMsg>
