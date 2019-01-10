@@ -3,35 +3,42 @@ package com.github.tnessn.text.replace;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
-public class Application {
-	public static void main(String[] args) throws Exception {
-		String path = System.getProperty("user.dir") + "\\config";
-		System.out.println("config path:" + path);
+import com.alibaba.fastjson.JSON;
 
-		List<String> readLines = FileUtils.readLines(new File(path), StandardCharsets.UTF_8);
-		String filepath = "";
-		String oldStr = "";
-		String newStr = "";
-		boolean regex = false;
-		for (String line : readLines) {
-			if (StringUtils.isBlank(line)) {
-				return;
+import cc.aicode.e2e.ExcelHelper;
+
+public class Application {
+	
+	public static void main(String[] args) throws Exception {
+		String path = System.getProperty("user.dir") .concat(File.separator).concat("config.xlsx");
+		System.out.println("配置文件路径:" + path);
+
+		ExcelHelper eh = ExcelHelper.readExcel(path);
+	    List<Place> entitys  = eh.toEntitys(Place.class);
+	    System.out.println(entitys.size()+"条替换规则");
+	    System.out.println(JSON.toJSONString(entitys));
+	    
+		
+	    List<String> extensions=null;
+		for (Place place : entitys) {
+			if(StringUtils.isNotBlank(place.getExtension())) {
+				extensions=Arrays.asList(place.getExtension().split("\\s+"));
+			}else {
+				extensions=Collections.emptyList();
 			}
-			filepath = line.split("\\t+")[0];
-			oldStr = line.split("\\t+")[1];
-			newStr = line.split("\\t+")[2];
-			regex = BooleanUtils.toBoolean(line.split("\\t+")[3]);
-			replace(new File(filepath), oldStr, newStr, regex);
+			replace(new File(place.getFilePath()), place.getOldStr(), place.getNewStr(), BooleanUtils.toBoolean(place.getSupportRegex()),extensions);
 		}
 	}
 
-	private static void replace(File file, String oldStr, String newStr, boolean regex) throws IOException {
+	private static void replace(File file, String oldStr, String newStr, boolean supportRegex,List<String> extensions) throws IOException {
 		if (!file.exists()) {
 			System.out.println(file.getAbsolutePath() + " not found!");
 			return;
@@ -39,14 +46,14 @@ public class Application {
 
 		if (file.isDirectory()) {
 			for (File f : file.listFiles()) {
-				replace(f, oldStr, newStr, regex);
+				replace(f, oldStr, newStr, supportRegex,extensions);
 			}
 		} else {
-			System.out.println(file.getAbsolutePath());
-			if (file.getName().endsWith(".md")) {
+			if (extensions.isEmpty()||(file.getName().lastIndexOf(".")!=-1&&extensions.contains(file.getName().substring(file.getName().lastIndexOf("."))))) {
+				System.out.println("正在替换文件"+file.getAbsolutePath());
 				String readFileToString = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
 				String resule = "";
-				if (regex) {
+				if (supportRegex) {
 					resule = StringUtils.replacePattern(readFileToString, oldStr, newStr);
 				} else {
 					resule = StringUtils.replace(readFileToString, oldStr, newStr);
