@@ -15,6 +15,5 @@ public class Application {
 		for (Place place : places) {
 			ReplaceUtil.start(replaceMsg.getExtension(),new File(place.getFilePath()), place.getOldStr(), place.getNewStr(),place.getSupportRegex());
 		}
-
 	}
 }
